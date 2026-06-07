@@ -19,18 +19,18 @@ flutter build apk --release --target-platform android-arm64
 
 | App | Detector package | Release APK | Difference |
 | --- | --- | ---: | ---: |
-| `flutter_chardet_size` | `flutter_chardet` | 14,061,814 bytes | +158,852 bytes |
-| `flutter_charset_detector_size` | `flutter_charset_detector` 6.0.0 | 13,902,962 bytes | baseline |
+| `flutter_chardet_size` | `flutter_chardet` | 14.1 MB | +0.16 MB |
+| `flutter_charset_detector_size` | `flutter_charset_detector` 6.0.0 | 13.9 MB | baseline |
 
 Largest native libraries:
 
 | App | Native library | Size |
 | --- | --- | ---: |
-| `flutter_chardet_size` | `libflutter.so` | 163,761,776 bytes |
-| `flutter_chardet_size` | `libapp.so` | 2,350,008 bytes |
-| `flutter_chardet_size` | `libflutter_chardet.so` | 424,120 bytes |
-| `flutter_charset_detector_size` | `libflutter.so` | 163,761,776 bytes |
-| `flutter_charset_detector_size` | `libapp.so` | 2,348,928 bytes |
+| `flutter_chardet_size` | `libflutter.so` | 163.8 MB |
+| `flutter_chardet_size` | `libapp.so` | 2.4 MB |
+| `flutter_chardet_size` | `libflutter_chardet.so` | 0.4 MB |
+| `flutter_charset_detector_size` | `libflutter.so` | 163.8 MB |
+| `flutter_charset_detector_size` | `libapp.so` | 2.3 MB |
 
 ## iOS
 
@@ -42,18 +42,18 @@ flutter build ios --release --no-codesign
 
 | App | Detector package | `Runner.app` directory | Difference |
 | --- | --- | ---: | ---: |
-| `flutter_chardet_size` | `flutter_chardet` | 12,648 KiB | baseline |
-| `flutter_charset_detector_size` | `flutter_charset_detector` 6.0.0 with `flutter_charset_detector_darwin` git override | 20,404 KiB | +7,756 KiB |
+| `flutter_chardet_size` | `flutter_chardet` | 12.4 MB | baseline |
+| `flutter_charset_detector_size` | `flutter_charset_detector` 6.0.0 | 19.9 MB | +7.6 MB |
 
 Largest iOS files:
 
 | App | File | Size |
 | --- | --- | ---: |
-| `flutter_chardet_size` | `Flutter.framework/Flutter` | 9,202,128 bytes |
-| `flutter_chardet_size` | `App.framework/App` | 1,889,888 bytes |
-| `flutter_chardet_size` | `Flutter.framework/icudtl.dat` | 862,304 bytes |
-| `flutter_chardet_size` | `flutter_chardet.framework/flutter_chardet` | 390,144 bytes |
-| `flutter_charset_detector_size` | `Flutter.framework/Flutter` | 9,202,128 bytes |
-| `flutter_charset_detector_size` | `libswift_Concurrency.dylib` | 7,741,808 bytes |
-| `flutter_charset_detector_size` | `App.framework/App` | 1,889,888 bytes |
-| `flutter_charset_detector_size` | `Flutter.framework/icudtl.dat` | 862,304 bytes |
+| `flutter_chardet_size` | `Flutter.framework/Flutter` | 9.2 MB |
+| `flutter_chardet_size` | `App.framework/App` | 1.9 MB |
+| `flutter_chardet_size` | `Flutter.framework/icudtl.dat` | 0.9 MB |
+| `flutter_chardet_size` | `flutter_chardet.framework/flutter_chardet` | 0.4 MB |
+| `flutter_charset_detector_size` | `Flutter.framework/Flutter` | 9.2 MB |
+| `flutter_charset_detector_size` | `libswift_Concurrency.dylib` | 7.7 MB |
+| `flutter_charset_detector_size` | `App.framework/App` | 1.9 MB |
+| `flutter_charset_detector_size` | `Flutter.framework/icudtl.dat` | 0.9 MB |
