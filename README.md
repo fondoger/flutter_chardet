@@ -58,11 +58,6 @@ UPDATE_PERFORMANCE_RESULTS=1 flutter test test/performance_test.dart
 
 ## Comparison
 
-`flutter_charset_detector` is included as a dev dependency for comparison. Its
-Darwin plugin is overridden to
-`github.com/fondoger/flutter_charset_detector`, ref `fix-swift6-result-race`,
-so the comparison builds with Swift 6.
-
 Accuracy was measured with the upstream `uchardet` fixtures in `test/upstream`.
 The comparison used the real macOS implementation of `flutter_charset_detector`
 6.0.0 and writes detailed per-fixture results to
@@ -95,8 +90,8 @@ Detailed commands and binary breakdowns are in `docs/app_size_results.md`.
 
 | Platform build | `flutter_chardet` app | `flutter_charset_detector` app | Smaller app |
 | --- | ---: | ---: | --- |
-| Android arm64 release APK | 14,061,814 bytes | 13,902,962 bytes | `flutter_charset_detector` by 158,852 bytes |
-| iOS release `Runner.app` (`--no-codesign`) | 12,648 KiB | 20,404 KiB | `flutter_chardet` by 7,756 KiB |
+| Android arm64 release APK | 14.1 MB | 13.9 MB | `flutter_charset_detector` by 0.16 MB |
+| iOS release `Runner.app` (`--no-codesign`) | 12.4 MB | 19.9 MB | `flutter_chardet` by 7.6 MB |
 
 ## Example
 
