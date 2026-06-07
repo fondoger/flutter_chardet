@@ -1,0 +1,21 @@
+name: flutter_charset_detector_size
+description: Minimal app for measuring flutter_charset_detector build size.
+publish_to: none
+
+environment:
+  sdk: ^3.12.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_charset_detector: 6.0.0
+
+dependency_overrides:
+  flutter_charset_detector_darwin:
+    git:
+      url: https://github.com/fondoger/flutter_charset_detector.git
+      ref: fix-swift6-result-race
+      path: flutter_charset_detector_darwin
+
+flutter:
+  uses-material-design: false

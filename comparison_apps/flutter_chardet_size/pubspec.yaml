@@ -1,0 +1,15 @@
+name: flutter_chardet_size
+description: Minimal app for measuring flutter_chardet build size.
+publish_to: none
+
+environment:
+  sdk: ^3.12.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_chardet:
+    path: ../..
+
+flutter:
+  uses-material-design: false
