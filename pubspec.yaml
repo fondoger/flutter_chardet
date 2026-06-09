@@ -1,10 +1,26 @@
 name: flutter_chardet
 description: "Flutter FFI charset detection and decoding using uchardet."
 version: 0.0.1
-publish_to: none
+homepage: https://github.com/fondoger/flutter_chardet
+repository: https://github.com/fondoger/flutter_chardet
+issue_tracker: https://github.com/fondoger/flutter_chardet/issues
+topics:
+  - charset
+  - encoding
+  - detection
+  - text
+  - flutter
 
 environment:
   sdk: ^3.12.1
+  flutter: ">=3.41.0"
+
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  windows:
 
 dependencies:
   charset_converter: ^2.4.0

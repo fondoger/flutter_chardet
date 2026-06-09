@@ -1,117 +1,128 @@
 # flutter_chardet
 
-Flutter FFI charset detection using vendored `uchardet`, with decoding delegated
-to the platform converters exposed by `charset_converter`.
+[![pub package](https://img.shields.io/pub/v/flutter_chardet.svg)](https://pub.dev/packages/flutter_chardet)
 
-## API
+Detect the character encoding of text bytes in Flutter, then optionally convert
+those bytes into a Dart `String`.
+
+This is useful when your app opens files, subtitles, logs, crawled pages, or
+other text that is not guaranteed to be UTF-8.
+
+`flutter_chardet` uses the native `uchardet` detector through FFI. When you call
+`autoDecode`, the byte-to-string conversion is handled by
+[`charset_converter`](https://pub.dev/packages/charset_converter).
+
+## Install
+
+```sh
+flutter pub add flutter_chardet
+```
+
+## Supported Platforms
+
+| Platform | Detect charset | Detect and convert to `String` |
+| --- | --- | --- |
+| Android | Yes | Yes |
+| iOS | Yes | Yes |
+| macOS | Yes | Yes |
+| Windows | Yes | Yes |
+| Linux | Yes | Yes |
+| Web | No | No |
+
+Web is not supported because detection uses native code. Conversion support is
+provided by `charset_converter`, which supports Android, iOS, macOS, Windows,
+and Linux.
+
+## Usage
+
+### Only Detect
+
+Use `detect` when you only need the most likely charset name.
 
 ```dart
+import 'dart:io';
+
+import 'package:flutter_chardet/flutter_chardet.dart';
+
+final bytes = await File('example.txt').readAsBytes();
 final charset = await FlutterChardet.detect(bytes);
-final result = await FlutterChardet.autoDecode(bytes);
 
 print(charset);
+```
+
+Possible output:
+
+```txt
+UTF-8
+```
+
+Other common outputs include `SHIFT_JIS`, `windows-1251`, `Big5`, `EUC-JP`, and
+`ISO-8859-1`. Very short text can be ambiguous, so treat the result as a best
+guess rather than a promise.
+
+### Detect and Convert to String
+
+Use `autoDecode` when you want a decoded Dart `String` and the detection details
+that were used for conversion.
+
+```dart
+import 'dart:io';
+
+import 'package:flutter_chardet/flutter_chardet.dart';
+
+final bytes = await File('subtitle.srt').readAsBytes();
+final result = await FlutterChardet.autoDecode(bytes);
+
 print(result.text);
+print(result.charset);
 print(result.confidence);
+print(result.language);
 ```
 
-`detect(Uint8List bytes)` returns the most likely charset reported by
-`uchardet`.
+Possible output:
 
-`autoDecode(Uint8List bytes)` detects the charset and calls
-`CharsetConverter.decode` with that charset. The returned `DecodingResult`
-contains `text`, `charset`, `encoding`, `confidence`, and `language`.
-
-## Native Sources
-
-The package vendors `uchardet` under `third_party/uchardet` from upstream commit
-`06029ec3340cdf6bf9a6a537dafb3f39eda0560e`.
-
-Bindings are generated with `ffigen` from the requested `dart-lang/native`
-commit:
-
-```sh
-dart run tool/ffigen.dart
+```txt
+こんにちは
+SHIFT_JIS
+0.99
+ja
 ```
 
-Native assets are built by `hook/build.dart` with `native_toolchain_c`.
+The returned `DecodingResult` contains:
 
-## Tests
+| Field | Meaning |
+| --- | --- |
+| `text` | Decoded Dart `String` |
+| `charset` | Charset detected before conversion |
+| `encoding` | Alias for `charset` |
+| `confidence` | Detector confidence for the selected charset |
+| `language` | Detected language code when available |
 
-```sh
-flutter test
-```
+## Compared with flutter_charset_detector
 
-The test suite includes:
+[`flutter_charset_detector`](https://pub.dev/packages/flutter_charset_detector)
+is another Flutter package that can detect and decode text encodings. The table
+below uses the upstream `uchardet` fixtures in `test/upstream` as a reference
+set. A decoded string only counts as correct when it matches an independent
+UTF-8 conversion.
 
-- public API tests with a mocked `charset_converter` MethodChannel
-- Dart ports of the upstream `uchardet` fixture tests
-- a comparison test against stored `flutter_charset_detector` fixture results
-- a native handle lifecycle leak test
-- unit-test performance checks
+| Package | Supported platforms | Correct charset detection | Correct decoded text | Small text `autoDecode` | Large text `autoDecode` | Minimal Android APK | Minimal iOS app |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `flutter_chardet` | Android, iOS, macOS, Windows, Linux | 152 / 158 | 148 / 158 | 0.125 ms | 142.7 ms | 14.1 MB | 12.4 MB |
+| `flutter_charset_detector` 6.0.0 | Android, iOS, macOS, Web | 146 / 158 | 145 / 158 | 0.117 ms | 278.7 ms | 13.9 MB | 19.9 MB |
 
-Performance results are stored in `docs/performance_results.md`. Regenerate
-them with:
+On this fixture set, `flutter_chardet` detects and decodes more cases correctly.
+For very small text the two packages are similar. For the large Shift_JIS sample,
+`flutter_chardet` was faster in the local benchmark.
 
-```sh
-UPDATE_PERFORMANCE_RESULTS=1 flutter test test/performance_test.dart
-```
+Detailed result files are kept in the GitHub repository:
 
-## Comparison
+- [detector_comparison_results.json](https://github.com/fondoger/flutter_chardet/blob/main/docs/detector_comparison_results.json)
+- [app_size_results.md](https://github.com/fondoger/flutter_chardet/blob/main/docs/app_size_results.md)
+- [performance_results.md](https://github.com/fondoger/flutter_chardet/blob/main/docs/performance_results.md)
 
-Accuracy was measured with the upstream `uchardet` fixtures in `test/upstream`.
-The comparison used the real macOS implementation of `flutter_charset_detector`
-6.0.0 and writes detailed per-fixture results to
-`docs/detector_comparison_results.json`.
+## Notes
 
-| Package | Native detector used in comparison | Detect: all fixtures | Detect: comparable fixtures | Correct `autoDecode` text | Result |
-| --- | --- | ---: | ---: | ---: | --- |
-| `flutter_chardet` | Vendored `uchardet` through Flutter native assets / FFI | 152 / 158 | 152 / 152 | 148 / 158 | Better detection and decoding accuracy on this fixture set |
-| `flutter_charset_detector` 6.0.0 | Darwin plugin using `UniversalDetector2` | 146 / 158 | 145 / 152 | 145 / 158 | Correctly decoded GB18030, but decoded fewer fixtures correctly overall |
-
-The comparable count excludes 6 fixtures that are known-broken in upstream
-`uchardet` tests or reproduce the same upstream failure at the vendored commit.
-
-`autoDecode` correctness is measured against an independent expected UTF-8
-conversion generated with `iconv`. A decoded result is counted as correct only
-when its UTF-8 SHA-256 hash and decoded string length match the expected UTF-8
-text.
-
-| `autoDecode` metric | `flutter_chardet` | `flutter_charset_detector` 6.0.0 |
-| --- | ---: | ---: |
-| Correct UTF-8 text | 148 / 158 | 145 / 158 |
-| Returned text but wrong UTF-8 text | 2 / 158 | 3 / 158 |
-| Failed to return text | 8 / 158 | 10 / 158 |
-
-The wrong-text cases for `flutter_chardet` were
-`test/upstream/es/iso-8859-15.txt` and `test/upstream/zh/gb18030.txt`. The
-wrong-text cases for `flutter_charset_detector` were
-`test/upstream/en/utf-8.txt`, `test/upstream/es/iso-8859-15.txt`, and
-`test/upstream/ka/georgian-ps.txt`.
-
-`autoDecode` performance was measured on macOS with the same comparison app.
-Each measured result was checked against the expected UTF-8 hash before being
-recorded. The JSON stores average, median, min, and max timings.
-
-| `autoDecode` performance case | Input | Iterations | `flutter_chardet` avg | `flutter_charset_detector` avg | Faster |
-| --- | ---: | ---: | ---: | ---: | --- |
-| Small Shift_JIS | 115 B | 100 | 0.125 ms | 0.117 ms | Similar; `flutter_charset_detector` by 0.008 ms |
-| Large Shift_JIS x10000 | 1.15 MB | 20 | 142.7 ms | 278.7 ms | `flutter_chardet` by 1.95x |
-
-Minimal app size was measured with the generated apps under `comparison_apps/`.
-Detailed commands and binary breakdowns are in `docs/app_size_results.md`.
-
-| Platform build | `flutter_chardet` app | `flutter_charset_detector` app | Smaller app |
-| --- | ---: | ---: | --- |
-| Android arm64 release APK | 14.1 MB | 13.9 MB | `flutter_charset_detector` by 0.16 MB |
-| iOS release `Runner.app` (`--no-codesign`) | 12.4 MB | 19.9 MB | `flutter_chardet` by 7.6 MB |
-
-## Example
-
-The example Dart app is in `example/`. Platform folders are intentionally not
-committed; generate them locally when needed:
-
-```sh
-cd example
-flutter create .
-flutter run
-```
+Detection is only a guess. If your format already declares an encoding, prefer
+that explicit value. Use charset detection when the input does not tell you what
+it is.
