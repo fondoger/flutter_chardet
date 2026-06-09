@@ -8,9 +8,10 @@ those bytes into a Dart `String`.
 This is useful when your app opens files, subtitles, logs, crawled pages, or
 other text that is not guaranteed to be UTF-8.
 
-`flutter_chardet` uses the native `uchardet` detector through FFI. When you call
-`autoDecode`, the byte-to-string conversion is handled by
-[`charset_converter`](https://pub.dev/packages/charset_converter).
+`flutter_chardet` uses the native
+[`uchardet`](https://www.freedesktop.org/wiki/Software/uchardet/) detector
+through FFI. When you call `autoDecode`, the byte-to-string conversion is
+handled by [`charset_converter`](https://pub.dev/packages/charset_converter).
 
 ## Install
 

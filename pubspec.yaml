@@ -1,6 +1,6 @@
 name: flutter_chardet
 description: "Flutter FFI charset detection and decoding using uchardet."
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/fondoger/flutter_chardet
 repository: https://github.com/fondoger/flutter_chardet
 issue_tracker: https://github.com/fondoger/flutter_chardet/issues

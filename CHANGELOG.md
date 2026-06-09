@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Added a README link to the upstream `uchardet` project.
+
 ## 1.0.0
 
 - Marked the initial stable release.
