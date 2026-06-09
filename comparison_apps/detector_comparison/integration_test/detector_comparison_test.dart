@@ -204,9 +204,8 @@ Future<List<_Fixture>> _loadFixtures() async {
 
 Future<_DetectionResult> _detectWithFlutterChardet(Uint8List bytes) async {
   try {
-    return _DetectionResult(
-      charset: await flutter_chardet.FlutterChardet.detect(bytes),
-    );
+    final result = await flutter_chardet.FlutterChardet.detect(bytes);
+    return _DetectionResult(charset: result.charset);
   } catch (error) {
     return _DetectionResult(error: '$error');
   }

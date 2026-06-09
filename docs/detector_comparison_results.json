@@ -1,6 +1,6 @@
 {
   "generatedBy": "flutter test integration_test/detector_comparison_test.dart -d macos --dart-define=FIXTURE_ROOT=/absolute/path/to/test/upstream --dart-define=OUTPUT_PATH=/absolute/path/to/docs/detector_comparison_results.json",
-  "generatedAt": "2026-06-07T15:55:49.284091Z",
+  "generatedAt": "2026-06-09T10:16:40.909893Z",
   "platform": "macos Version 26.4.1 (Build 25E253)",
   "dart": "3.12.1 (stable) (Tue May 26 01:02:21 2026 -0700) on \"macos_arm64\"",
   "flutterCharsetDetectorVersion": "6.0.0",
@@ -2144,7 +2144,7 @@
       "flutterCharsetDetectorError": null,
       "flutterCharsetDetectorMatches": false,
       "flutterChardetAutoDecodeCharset": null,
-      "flutterChardetAutoDecodeError": "PlatformException(missing_charset, Charset could not be found, null, null)",
+      "flutterChardetAutoDecodeError": "CharsetConversionError: Result of decoding was null which may indicate that native converter failed to decode your data",
       "flutterChardetDecodedLength": null,
       "flutterChardetDecodedSha256": null,
       "flutterChardetAutoDecodeCorrect": false,
@@ -2171,7 +2171,7 @@
       "flutterCharsetDetectorError": null,
       "flutterCharsetDetectorMatches": false,
       "flutterChardetAutoDecodeCharset": null,
-      "flutterChardetAutoDecodeError": "PlatformException(missing_charset, Charset could not be found, null, null)",
+      "flutterChardetAutoDecodeError": "CharsetConversionError: Result of decoding was null which may indicate that native converter failed to decode your data",
       "flutterChardetDecodedLength": null,
       "flutterChardetDecodedSha256": null,
       "flutterChardetAutoDecodeCorrect": false,
@@ -2279,7 +2279,7 @@
       "flutterCharsetDetectorError": null,
       "flutterCharsetDetectorMatches": true,
       "flutterChardetAutoDecodeCharset": null,
-      "flutterChardetAutoDecodeError": "PlatformException(missing_charset, Charset could not be found, null, null)",
+      "flutterChardetAutoDecodeError": "CharsetConversionError: Result of decoding was null which may indicate that native converter failed to decode your data",
       "flutterChardetDecodedLength": null,
       "flutterChardetDecodedSha256": null,
       "flutterChardetAutoDecodeCorrect": false,
@@ -4300,16 +4300,16 @@
       "warmupIterations": 10,
       "iterations": 100,
       "flutterChardet": {
-        "averageMicros": 124.83,
-        "medianMicros": 100,
-        "minMicros": 89,
-        "maxMicros": 1137
+        "averageMicros": 117.69,
+        "medianMicros": 105,
+        "minMicros": 91,
+        "maxMicros": 955
       },
       "flutterCharsetDetector": {
-        "averageMicros": 116.52,
-        "medianMicros": 110,
-        "minMicros": 96,
-        "maxMicros": 290
+        "averageMicros": 106.52,
+        "medianMicros": 103,
+        "minMicros": 94,
+        "maxMicros": 167
       }
     },
     {
@@ -4322,16 +4322,16 @@
       "warmupIterations": 3,
       "iterations": 20,
       "flutterChardet": {
-        "averageMicros": 142667.9,
-        "medianMicros": 140653,
-        "minMicros": 137322,
-        "maxMicros": 166864
+        "averageMicros": 135455.1,
+        "medianMicros": 134583,
+        "minMicros": 131241,
+        "maxMicros": 142694
       },
       "flutterCharsetDetector": {
-        "averageMicros": 278650.8,
-        "medianMicros": 278417,
-        "minMicros": 275937,
-        "maxMicros": 285698
+        "averageMicros": 276062.85,
+        "medianMicros": 276164,
+        "minMicros": 273340,
+        "maxMicros": 278442
       }
     }
   ]

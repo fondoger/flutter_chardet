@@ -35,68 +35,40 @@ and Linux.
 
 ## Usage
 
-### Only Detect
-
-Use `detect` when you only need the most likely charset name.
-
-```dart
-import 'dart:io';
-
-import 'package:flutter_chardet/flutter_chardet.dart';
-
-final bytes = await File('example.txt').readAsBytes();
-final charset = await FlutterChardet.detect(bytes);
-
-print(charset);
-```
-
-Possible output:
-
-```txt
-UTF-8
-```
-
-Other common outputs include `SHIFT_JIS`, `windows-1251`, `Big5`, `EUC-JP`, and
-`ISO-8859-1`. Very short text can be ambiguous, so treat the result as a best
-guess rather than a promise.
-
-### Detect and Convert to String
-
-Use `autoDecode` when you want a decoded Dart `String` and the detection details
-that were used for conversion.
-
 ```dart
 import 'dart:io';
 
 import 'package:flutter_chardet/flutter_chardet.dart';
 
 final bytes = await File('subtitle.srt').readAsBytes();
-final result = await FlutterChardet.autoDecode(bytes);
 
-print(result.text);
-print(result.charset);
-print(result.confidence);
-print(result.language);
+// Only detect the most likely charset.
+final detection = await FlutterChardet.detect(bytes);
+print(detection.charset); // Possible output: SHIFT_JIS
+print(detection.confidence); // Possible output: 0.99
+print(detection.language); // Possible output: ja
+
+// Inspect candidate charsets. By default this returns the top 5 candidates.
+final candidates = await FlutterChardet.detectAll(bytes);
+print(candidates.map((candidate) => candidate.charset).toList());
+// Possible output: [SHIFT_JIS, EUC-JP, ISO-2022-JP]
+
+// Use top: 0 when you want every candidate reported by uchardet.
+final allCandidates = await FlutterChardet.detectAll(bytes, top: 0);
+print(allCandidates.length); // Possible output: 8
+
+// Detect and convert to a Dart String. By default this tries the top 5
+// candidates in order until charset_converter decodes one successfully.
+final decoded = await FlutterChardet.autoDecode(bytes);
+print(decoded.text); // Possible output: こんにちは
+print(decoded.charset); // Possible output: SHIFT_JIS
+print(decoded.confidence); // Possible output: 0.99
+print(decoded.language); // Possible output: ja
 ```
 
-Possible output:
-
-```txt
-こんにちは
-SHIFT_JIS
-0.99
-ja
-```
-
-The returned `DecodingResult` contains:
-
-| Field | Meaning |
-| --- | --- |
-| `text` | Decoded Dart `String` |
-| `charset` | Charset detected before conversion |
-| `encoding` | Alias for `charset` |
-| `confidence` | Detector confidence for the selected charset |
-| `language` | Detected language code when available |
+Other common charset outputs include `UTF-8`, `windows-1251`, `Big5`, `EUC-JP`,
+and `ISO-8859-1`. Very short text can be ambiguous, so treat the result as a
+best guess rather than a promise.
 
 ## Compared with flutter_charset_detector
 
@@ -108,8 +80,8 @@ UTF-8 conversion.
 
 | Package | Supported platforms | Correct charset detection | Correct decoded text | Small text `autoDecode` | Large text `autoDecode` | Minimal Android APK | Minimal iOS app |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| `flutter_chardet` | Android, iOS, macOS, Windows, Linux | 152 / 158 | 148 / 158 | 0.125 ms | 142.7 ms | 14.1 MB | 12.4 MB |
-| `flutter_charset_detector` 6.0.0 | Android, iOS, macOS, Web | 146 / 158 | 145 / 158 | 0.117 ms | 278.7 ms | 13.9 MB | 19.9 MB |
+| `flutter_chardet` | Android, iOS, macOS, Windows, Linux | 152 / 158 | 148 / 158 | 0.118 ms | 135.5 ms | 14.1 MB | 12.4 MB |
+| `flutter_charset_detector` 6.0.0 | Android, iOS, macOS, Web | 146 / 158 | 145 / 158 | 0.107 ms | 276.1 ms | 13.9 MB | 19.9 MB |
 
 On this fixture set, `flutter_chardet` detects and decodes more cases correctly.
 For very small text the two packages are similar. For the large Shift_JIS sample,
