@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Simplified the supported platforms section in the README.
+
 ## 1.0.1
 
 - Added a README link to the upstream `uchardet` project.

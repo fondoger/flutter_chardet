@@ -21,14 +21,11 @@ flutter pub add flutter_chardet
 
 ## Supported Platforms
 
-| Platform | Detect charset | Detect and convert to `String` |
-| --- | --- | --- |
-| Android | Yes | Yes |
-| iOS | Yes | Yes |
-| macOS | Yes | Yes |
-| Windows | Yes | Yes |
-| Linux | Yes | Yes |
-| Web | No | No |
+- Android
+- iOS
+- macOS
+- Windows
+- Linux
 
 Web is not supported because detection uses native code. Conversion support is
 provided by `charset_converter`, which supports Android, iOS, macOS, Windows,
